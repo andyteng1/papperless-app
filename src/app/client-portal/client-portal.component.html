@@ -1,0 +1,37 @@
+<nav class="navbar navbar-light bg-light">
+  Client Portal
+</nav>
+
+  
+<div class="container">
+  <br/>
+  <h2>List of documents</h2>
+  
+  <div *ngIf="listOfDocuments.length === 0">
+    <div class="alert alert-info" role="alert">
+      <i class="fa fa-info-circle"></i>&nbsp;&nbsp;There are no pending/completed documents.
+    </div>
+  </div>
+
+  <div *ngIf="listOfDocuments.length > 0">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Document</th>
+          <th scope="col">Last modified</th>
+          <th scope="col">Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let document of listOfDocuments">
+          <td>{{document.document}}</td>
+          <td>{{document.lastModified}}</td>
+          <td>{{document.status}}</td>
+          <td *ngIf="document.status === 'Completed'"><button type="button" class="btn btn-success btn-sm" (click)="previewDocument(document)"><i class="fa fa-eye"></i></button></td>
+          <td *ngIf="document.status != 'Completed'"><button type="button" class="btn btn-warning btn-sm" (click)="signDocument(document)"><i class="fa fa-edit"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
