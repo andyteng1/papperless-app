@@ -4,9 +4,11 @@
 
 <div class="container">
   <br/>
+  <label id="clientId" style="display: none;">{{ clientId }}</label>
+  <label id="documentId" style="display: none;">{{ documentId }}</label>
   <button type="button" class="btn btn-primary" (click)="backToClientPortal()"><i class="fa fa-undo"></i> Back</button>
   <br/><br/>
-  <embed src="assets/sample.pdf" width="100%" height="650" alt="pdf" type="application/pdf">
+  <embed [src]="documentUrl" width="100%" height="650" alt="pdf" type="application/pdf">
   
   <br/>
   <p>

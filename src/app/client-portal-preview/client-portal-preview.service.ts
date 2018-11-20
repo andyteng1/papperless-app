@@ -4,7 +4,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class RMPortalPreviewService {
+export class ClientPortalPreviewService {
   constructor(private http: Http) { }
 
   getDocumentAPI(clientId, documentId): Promise<any> {

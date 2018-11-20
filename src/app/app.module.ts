@@ -14,6 +14,9 @@ import { ClientPortalSignComponent } from './client-portal-sign/client-portal-si
 import { RmPortalPreviewComponent } from './rm-portal-preview/rm-portal-preview.component';
 import { ClientPortalDataService } from './client-portal/client-portal-data.service';
 import { RMPortalDataService } from './rm-portal/rm-portal-data.service';
+import { RMPortalPreviewService } from './rm-portal-preview/rm-portal-preview.service';
+import { ClientPortalPreviewService } from './client-portal-preview/client-portal-preview.service';
+import { ClientPortalSignService } from './client-portal-sign/client-portal-sign.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { RMPortalDataService } from './rm-portal/rm-portal-data.service';
   ],
   providers: [
     RMPortalService,
+    RMPortalPreviewService,
+    ClientPortalPreviewService,
+    ClientPortalSignService,
     ClientPortalDataService,
     RMPortalDataService
   ],

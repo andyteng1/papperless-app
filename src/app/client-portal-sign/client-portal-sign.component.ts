@@ -1,7 +1,10 @@
 import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import {DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as $ from 'jquery';
 
 import { ClientPortalDataService } from './../client-portal/client-portal-data.service';
+import { ClientPortalSignService } from './client-portal-sign.service';
 
 @Component({
   selector: 'app-client-portal-sign',
@@ -9,15 +12,29 @@ import { ClientPortalDataService } from './../client-portal/client-portal-data.s
   styleUrls: ['./client-portal-sign.component.css']
 })
 export class ClientPortalSignComponent implements OnInit, AfterViewInit {
+  private clientId;
+  private documentId;
+  private documentUrl: SafeResourceUrl;
 
   constructor(
     private router: Router,
-    private clientPortalDataService: ClientPortalDataService
+    private clientPortalDataService: ClientPortalDataService,
+    private clientPortalSignService: ClientPortalSignService,
+    public sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
-    // TODO: service to get actual document and display
-    console.log(this.clientPortalDataService.getDocumentData());
+    this.clientId = this.clientPortalDataService.getDocumentData().clientId;
+    this.documentId = this.clientPortalDataService.getDocumentData().document;
+    this.clientPortalSignService.getDocumentAPI(this.clientId, this.documentId)
+      .then(result => {
+        console.log(result);
+        // TODO: to form the actual url
+        this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/sample.pdf');
+      }).catch(ex => {
+        console.log(ex);
+        this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/sample.pdf');
+      });
   }
 
   ngAfterViewInit() {
@@ -48,9 +65,24 @@ export class ClientPortalSignComponent implements OnInit, AfterViewInit {
         return alert('Please provide a signature first.');
       }
 
-      const data = signaturePad.toDataURL('image/png');
-      console.log(data);
-      // TODO: AJAX HTTP base64 image and document ID
+      const signatureBased64 = signaturePad.toDataURL('image/png');
+      // console.log(signatureBased64);
+
+
+      const reqObj = {
+        clientId: document.getElementById('clientId').innerText,
+        documentId: document.getElementById('documentId').innerText,
+        signature: signatureBased64
+      };
+
+      console.log(reqObj);
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:8080/xxx',
+        data: JSON.stringify(reqObj),
+        contentType: 'application/json'
+      });
     });
 
     document.getElementById('clear').addEventListener('click', function () {
