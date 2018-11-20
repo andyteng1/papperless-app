@@ -14,7 +14,10 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="name">Client Id</label><br/>
-            <input type="text" class="form-control" id="clientId" placeholder="Bob" formControlName="clientId">
+            <!--<input type="text" class="form-control" id="clientId" placeholder="" formControlName="clientId">-->
+            <select class="form-control" id="clientId" (change)="onChange($event)">
+              <option *ngFor="let id of listOfClientId" [ngValue]="id">{{ id }}</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="document">Document</label><br/>
@@ -22,6 +25,13 @@
           </div>
           <button type="submit" [disabled]="form.invalid || loading" class="btn btn-success">Submit <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i></button>
         </form>
+      </div>
+      <br/>
+      <div class="alert alert-danger" role="alert" *ngIf="uploadErrorMessage.length > 0">
+        {{ uploadErrorMessage }}
+      </div>
+      <div class="alert alert-success" role="alert" *ngIf="uploadSuccessMessage.length > 0">
+        {{ uploadSuccessMessage }}
       </div>
     </div>
   </div>
@@ -41,14 +51,16 @@
           <th scope="col">Document</th>
           <th scope="col">Last modified</th>
           <th scope="col">Status</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let document of listOfDocuments">
           <td>{{document.clientId}}</td>
-          <td><button type="button" class="btn btn-light btn-sm" (click)="previewDocument(document)"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;&nbsp;{{document.document}}</td>
+          <td>{{document.document}}</td>
           <td>{{document.lastModified}}</td>
           <td>{{document.status}}</td>
+          <td><button type="button" class="btn btn-info btn-sm" (click)="previewDocument(document)"><i class="fa fa-eye"></i></button></td>
         </tr>
       </tbody>
     </table>

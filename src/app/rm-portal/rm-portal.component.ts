@@ -11,8 +11,11 @@ import { RMPortalDataService } from './rm-portal-data.service';
   styleUrls: ['./rm-portal.component.css']
 })
 export class RmPortalComponent implements OnInit {
-  public listOfClientId;
-  public listOfDocuments;
+  public listOfClientId: any;
+  public listOfDocuments: any;
+  public uploadSuccessMessage: string;
+  public uploadErrorMessage: string;
+  public selectedClient: string;
 
   public form: FormGroup;
   public loading: boolean;
@@ -25,11 +28,14 @@ export class RmPortalComponent implements OnInit {
     private router: Router,
     private rmPortalDataService: RMPortalDataService
   ) {
-    this.listOfClientId = [1, 2, 3, 4, 5];
+    this.listOfClientId = ['1', '2', '3', '4', '5'];
+    this.selectedClient = '1';
     this.listOfDocuments = [
       { clientId: 1, document: 'abc.pdf', lastModified: '2018-11-19 18:00:00', status: 'Completed'},
       { clientId: 1, document: 'xyz.pdf', lastModified: '2018-11-19 17:00:00', status: 'Pending Signature'}
     ];
+    this.uploadSuccessMessage = '';
+    this.uploadErrorMessage = '';
     this.loading = false;
     this.createForm();
    }
@@ -53,24 +59,33 @@ export class RmPortalComponent implements OnInit {
 
   private prepareSave(): any {
     const input = new FormData();
-    input.append('clientId', this.form.get('clientId').value);
+    console.log(this.selectedClient);
+    console.log(this.form.get('document').value);
+    input.append('clientId', this.selectedClient);
     input.append('document', this.form.get('document').value);
     return input;
   }
 
   onSubmit() {
+    this.uploadErrorMessage = '';
+    this.uploadSuccessMessage = '';
     const formModel = this.prepareSave();
     this.loading = true;
     this.rmPortalService.uploadAPI(formModel)
       .then(result => {
         console.log(result);
+        this.uploadSuccessMessage = 'Document uploaded successfully.';
       }).catch(ex => {
         console.log(ex);
+        this.uploadErrorMessage = 'Document upload failed. Please try again.';
       });
     setTimeout(() => {
-      alert('done!');
       this.loading = false;
-    }, 1000);
+    }, 500);
+  }
+
+  onChange(id) {
+    this.selectedClient = (id.srcElement || id.target).value;
   }
 
   clearFile() {
