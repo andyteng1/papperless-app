@@ -62,6 +62,7 @@ export class RmPortalComponent implements OnInit {
     console.log(this.selectedClient);
     console.log(this.form.get('document').value);
     input.append('clientId', this.selectedClient);
+    input.append('startedBy', 'RM-1');
     input.append('document', this.form.get('document').value);
     return input;
   }

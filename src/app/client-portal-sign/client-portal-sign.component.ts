@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import {DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import * as $ from 'jquery';
+// import $ from 'jquery';
 
 import { ClientPortalDataService } from './../client-portal/client-portal-data.service';
 import { ClientPortalSignService } from './client-portal-sign.service';
@@ -77,7 +77,7 @@ export class ClientPortalSignComponent implements OnInit, AfterViewInit {
 
       console.log(reqObj);
 
-      $.ajax({
+      jQuery.ajax({
         type: 'POST',
         url: 'http://localhost:8080/xxx',
         data: JSON.stringify(reqObj),
